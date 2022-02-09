@@ -12,26 +12,25 @@ public:
     int longestValidParentheses(string s) 
     {
         int longest = 0;
-        stack<char> sta;
-        for (auto& it : s)
+        stack<int> sta;
+        sta.push(-1);
+        for (int i = 0; i < s.length(); ++i)
         {
-            if (it == ')')
+            if (s[i] == '(')
             {
-                if (sta.empty())
-                {
-                    continue;
-                }
-
-                if (sta.top() == '(')
-                {
-                    longest += 2;
-                }
-
-                sta.pop();
+                sta.push(i); 
             }
             else
             {
-                sta.push(it);
+                sta.pop();
+                if (sta.empty())
+                {
+                    sta.push(i);
+                }
+                else
+                {
+                    longest = std::max(longest, i - sta.top());
+                }
             }
         }
 
@@ -42,6 +41,6 @@ public:
 int main()
 {
     Solution ss;
-    std::cout << ss.longestValidParentheses("()(()") << std::endl;
+    std::cout << ss.longestValidParentheses("())((())") << std::endl;
     return 0;
 }
